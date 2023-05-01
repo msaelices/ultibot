@@ -7,5 +7,8 @@ templates = Jinja2Templates(directory='templates')
 
 
 @router.get('/chat/', response_class=HTMLResponse)
-async def read_item(request: Request):
-    return templates.TemplateResponse('chat.html', {'request': request, 'id': id})
+async def chat(request: Request):
+    return templates.TemplateResponse('chat.html', {
+        'request': request,
+        'endpoint': request.url_for('chat_ws_endpoint')
+    })
