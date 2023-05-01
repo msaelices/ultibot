@@ -22,9 +22,12 @@ Copy the `.env-default` file to `.env` file and fill it with your API keys:
 
 ### Starting the server
 
-For starting the FastAPI Server, run the following command:
+For starting the FastAPI Server, go to the `src` directory and run `uvicorn` with the following command:
 
-    cd src/
     uvicorn --reload main:app --host 0.0.0.0 --port 8080
 
-Navigate to the http://localhost:8080/
+Or just:
+
+    python main.py
+
+Then, navigate to the http://localhost:8080/chat/
