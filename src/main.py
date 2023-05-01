@@ -2,13 +2,17 @@ from functools import lru_cache
 import logging
 
 from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
-from api import router
+from api import router as api_router
+from app import router as app_router
 from config import Settings
 
 config = Settings()
-app = FastAPI(title='UltiBot API', version='0.0.1')
+
+app = FastAPI(title='UltiBot App', version='0.0.1')
+app.mount('/static', StaticFiles(directory='static'), name='static')
 
 origins= [
     'http://localhost:8080',
@@ -40,4 +44,5 @@ async def event_shutdown():
     logging.info('Shutdown...')
 
 
-app.include_router(router, prefix='/api')
+app.include_router(api_router, prefix='/api')
+app.include_router(app_router)
