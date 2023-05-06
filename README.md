@@ -1,6 +1,6 @@
 # Ultibot
 
-Ultimate Frisbee Chatbot, made with FastAPI and Vue.js
+Ultimate Frisbee Chatbot, made with langchain and the GPT LLM
 
 ## Set-up
 
