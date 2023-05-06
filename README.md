@@ -22,12 +22,8 @@ Copy the `.env-default` file to `.env` file and fill it with your API keys:
 
 ### Starting the server
 
-For starting the FastAPI Server, go to the `src` directory and run `uvicorn` with the following command:
+For starting the Streamlit Server, run the following command:
 
-    uvicorn --reload main:app --host 0.0.0.0 --port 8080
+    streamlit run src/main.py
 
-Or just:
-
-    python main.py
-
-Then, navigate to the http://localhost:8080/chat/
+A new page in your browser will be opened pointing to the server
