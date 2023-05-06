@@ -1,6 +1,6 @@
 # Ultibot
 
-Ultimate Frisbee Chatbot, made with langchain and the GPT LLM
+Ultimate Frisbee Chatbot, made with langchain and the GPT LLM, using Pinecone as the Vector storage
 
 ## Set-up
 

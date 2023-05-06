@@ -1,17 +1,18 @@
 import sys
 
 import langchain  # noqa: F401
-import requests
 import streamlit as st
 
 from dotenv import load_dotenv
+
+load_dotenv()  # load environment variables from .env file before importing any other modules
+
 from langchain.callbacks import get_openai_callback
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
-from langchain.document_loaders.pdf import PyMuPDFLoader
-from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-from langchain.vectorstores import FAISS
+
+from brain import get_relevant_docs
 
 
 def get_rules_prompt() -> PromptTemplate:
@@ -29,22 +30,13 @@ FINAL ANSWER IN SPANISH:"""
 
 
 def main() -> int:
-    load_dotenv()
     st.set_page_config(page_title='Ultibot', page_icon=':frisbee:')
     st.header('Ultibot, tu experto en Ultimate Frisbee 💬')
 
-    # RULES_URL = 'https://usaultimate.org/wp-content/uploads/2022/01/Official-Rules-of-Ultimate-2022-2023.pdf'
-    RULES_URL = 'https://topultimatepa.files.wordpress.com/2021/06/wfdf-rules-of-ultimate-2021-2024-esp-universal-1.pdf'
-
-    loader = PyMuPDFLoader(RULES_URL)
-    docs = loader.load()
-
     # create embeddings
-    embeddings = OpenAIEmbeddings()
-    vector_db = FAISS.from_documents(docs, embedding=embeddings)
     question = st.text_area('Haz una pregunta sobre las reglas de Ultimate 🥏:')
     if question:
-        relevant_docs = vector_db.similarity_search(question, k=1)
+        relevant_docs = get_relevant_docs(question)
 
         llm = OpenAI(model_name='text-davinci-003')
         llm.set_verbose(False)
