@@ -26,4 +26,4 @@ def get_relevant_docs(question: str) -> list[Document]:
     index = pinecone.Index(index_name)
     embeddings = OpenAIEmbeddings()
     vector_db = Pinecone(index, embeddings.embed_query, 'text')
-    return vector_db.similarity_search(question, k=1)
+    return vector_db.similarity_search(question, k=2)
