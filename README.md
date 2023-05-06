@@ -29,7 +29,6 @@ Install the needed dependencies:
 
 Copy the `.env-default` file to `.env` file and fill it with your API keys:
 
-    cd src/
     cp .env-default .env
 
 
@@ -37,12 +36,12 @@ Copy the `.env-default` file to `.env` file and fill it with your API keys:
 
 Ingest the Ultimate Frisbee documentation from the official rules PDF:
 
-    python src/ingest.py
+    python ingest.py
 
 ### Starting the server
 
 For starting the Streamlit Server, run the following command:
 
-    streamlit run src/main.py
+    streamlit run main.py
 
 A new page in your browser will be opened pointing to the server
