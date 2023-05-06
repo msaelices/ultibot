@@ -4,7 +4,11 @@ Ultimate Frisbee Chatbot, made with langchain and the GPT LLM, using Pinecone as
 
 ## Screenshots
 
+### Example 1: Question about the pick call
+
 <img src=".images/pick.png" alt="export" width="500"/>
+
+### Example 2: Question about a fast count call
 
 <img src=".images/fast-count.png" alt="export" width="500"/>
 
