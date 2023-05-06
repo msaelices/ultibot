@@ -1,6 +1,8 @@
 # Ultibot
 
-Ultimate Frisbee Chatbot, made with langchain and the GPT LLM, using Pinecone as the Vector storage
+Ultimate Frisbee Chatbot, made with langchain and the GPT LLM, using Pinecone as the Vector storage.
+
+Supported languages: English and Spanish.
 
 ## Screenshots
 
@@ -35,8 +37,7 @@ Copy the `.env-default` file to `.env` file and fill it with your API keys:
 
 Ingest the Ultimate Frisbee documentation from the official rules PDF:
 
-    cd src/
-    python ingest.py
+    python src/ingest.py
 
 ### Starting the server
 
