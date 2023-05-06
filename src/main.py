@@ -1,18 +1,16 @@
 import sys
-from io import BytesIO
 
+import langchain  # noqa: F401
 import requests
 import streamlit as st
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
-from langchain.chains.question_answering import load_qa_chain
-from langchain.llms import OpenAI
-from langchain.callbacks import get_openai_callback
 
 from dotenv import load_dotenv
-from PyPDF2 import PdfReader
-
+from langchain.callbacks import get_openai_callback
+from langchain.chains.qa_with_sources import load_qa_with_sources_chain
+from langchain.document_loaders.pdf import PyMuPDFLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.llms import OpenAI
+from langchain.vectorstores import FAISS
 
 def main() -> int:
     load_dotenv()
@@ -25,29 +23,20 @@ def main() -> int:
     if not response.ok:
         st.exception(RuntimeError('Error fetching Ultimate Frisbee rules'))
         return 1
-    reader = PdfReader(BytesIO(response.content))
-    rules_text = ""
-    for page in reader.pages:
-        rules_text += page.extract_text()
-
-    # split rules into chunks
-    text_splitter = CharacterTextSplitter(
-      separator='\n',
-      chunk_size=2000,
-      chunk_overlap=200,
-      length_function=len
-    )
-    chunks = text_splitter.split_text(rules_text)
+    loader = PyMuPDFLoader(RULES_URL)
+    docs = loader.load()
 
     # create embeddings
     embeddings = OpenAIEmbeddings()
-    vector_db = FAISS.from_texts(chunks, embeddings)
+    vector_db = FAISS.from_documents(docs, embedding=embeddings)
     question = st.text_area('Haz una pregunta sobre las reglas de Ultimate 🥏:')
     if question:
-        relevant_docs = vector_db.similarity_search(question, k=3)
+        relevant_docs = vector_db.similarity_search(question, k=1)
 
         llm = OpenAI(model_name='text-davinci-003')
-        qa_chain = load_qa_chain(llm, verbose=False)
+        llm.set_verbose(False)
+
+        qa_chain = load_qa_with_sources_chain(llm, verbose=False)
 
         with get_openai_callback() as cb:
             response = qa_chain.run(input_documents=relevant_docs, question=question)
