@@ -2,6 +2,12 @@
 
 Ultimate Frisbee Chatbot, made with langchain and the GPT LLM, using Pinecone as the Vector storage
 
+## Screenshots
+
+<img src=".images/pick.png" alt="export" width="500"/>
+
+<img src=".images/fast-count.png" alt="export" width="500"/>
+
 ## Set-up
 
 ### Backend setup
