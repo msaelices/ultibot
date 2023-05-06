@@ -17,11 +17,12 @@ from brain import get_relevant_docs
 
 
 def get_rules_prompt(lang: str) -> PromptTemplate:
+    """Get the prompt to use for the rules document"""
     language = 'Spanish' if lang == 'es' else 'English'
     reference = 'FUENTES' if lang == 'es' else 'SOURCES'
     template = f"""Given the following extracted parts of a long document with the Ultimate Frisbee rules and a question, create a final answer with references ("{reference}"). 
 If you don't know the answer, just say that you don't know. Don't try to make up an answer.
-ALWAYS return a "{reference}" part in your answer.
+ALWAYS return a "{reference}" part in your answer, including the document page number.
 Respond in {language}.
 
 QUESTION: {{question}}
@@ -30,6 +31,13 @@ QUESTION: {{question}}
 =========
 FINAL ANSWER IN {language}:"""
     return PromptTemplate(template=template, input_variables=['summaries', 'question'])
+
+def get_document_prompt() -> PromptTemplate:
+    """Get the prompt to use for each document"""
+    return PromptTemplate(
+        template='Content: {page_content}\nSource: {source}\nPage: {page_number}',
+        input_variables=['page_content', 'source', 'page_number'],
+    )
 
 
 headers = {
@@ -61,7 +69,9 @@ def main() -> int:
         llm = OpenAI(model_name='text-davinci-003')
         llm.set_verbose(False)
 
-        qa_chain = load_qa_with_sources_chain(llm, verbose=False, prompt=get_rules_prompt(lang))
+        qa_chain = load_qa_with_sources_chain(
+            llm, verbose=False, prompt=get_rules_prompt(lang), document_prompt=get_document_prompt(),
+        )
 
         with get_openai_callback() as cb:
             response = qa_chain.run(input_documents=relevant_docs, question=question)

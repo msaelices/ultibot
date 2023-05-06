@@ -10,9 +10,9 @@ Supported languages: English and Spanish.
 
 <img src=".images/pick.png" alt="export" width="500"/>
 
-### Example 2: Question about a fast count call
+### Example 2: Question about the brick mark
 
-<img src=".images/fast-count.png" alt="export" width="500"/>
+<img src=".images/brick.png" alt="export" width="500"/>
 
 ## Set-up
 
