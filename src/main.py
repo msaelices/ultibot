@@ -35,10 +35,7 @@ def main() -> int:
 
     # RULES_URL = 'https://usaultimate.org/wp-content/uploads/2022/01/Official-Rules-of-Ultimate-2022-2023.pdf'
     RULES_URL = 'https://topultimatepa.files.wordpress.com/2021/06/wfdf-rules-of-ultimate-2021-2024-esp-universal-1.pdf'
-    response = requests.get(RULES_URL)
-    if not response.ok:
-        st.exception(RuntimeError('Error fetching Ultimate Frisbee rules'))
-        return 1
+
     loader = PyMuPDFLoader(RULES_URL)
     docs = loader.load()
 
