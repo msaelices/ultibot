@@ -1,54 +1,25 @@
-from functools import lru_cache
-import logging
+import sys
+from io import BytesIO
 
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
+import requests
+import streamlit as st
 
-from api import router as api_router
-from app import router as app_router
-from config import Settings
-
-config = Settings()
-
-app = FastAPI(title='UltiBot App', version='0.0.1')
-app.mount('/static', StaticFiles(directory='static'), name='static')
-
-origins= [
-    'http://localhost:8080',
-    'http://127.0.0.1:8080'
-]
+from dotenv import load_dotenv
+from PyPDF2 import PdfReader
 
 
-@lru_cache()
-def get_settings():
-    return Settings()
+def main() -> int:
+    load_dotenv()
+    st.set_page_config(page_title='Ask your Ultimate Frisbee Chatbot expert')
+    st.header("Ask Ultimate Frisbee Chatbot expert 💬")
 
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=['*'],
-    allow_headers=['*'],
-)
-
-
-@app.on_event('startup')
-async def event_startup():
-    logging.info('Connect to OpenAI....')
-
-
-@app.on_event('shutdown')
-async def event_shutdown():
-    logging.info('Shutdown...')
-
-
-app.include_router(api_router, prefix='/api')
-app.include_router(app_router)
+    RULES_URL = 'https://usaultimate.org/wp-content/uploads/2022/01/Official-Rules-of-Ultimate-2022-2023.pdf'
+    response = requests.get(RULES_URL)
+    if not response.ok:
+        st.exception(RuntimeError('Error fetching Ultimate Frisbee rules'))
+        return -1
+    reader = PdfReader(BytesIO(response.content))
 
 
 if __name__ == '__main__':
-    import uvicorn
-
-    uvicorn.run(app, host='0.0.0.0', port=8080)
+    sys.exit(main())
