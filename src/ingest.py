@@ -12,11 +12,11 @@ from brain import ingest_rules
 
 console = Console()
 
-SPANISH_RULES_URL = 'https://topultimatepa.files.wordpress.com/2021/06/wfdf-rules-of-ultimate-2021-2024-esp-universal-1.pdf'
+WFDF_RULES_URL = 'https://rules.wfdf.org/documents/wfdf-rules-of-ultimate-2021-2024/download'
 
 def main() -> int:
     parser = argparse.ArgumentParser(description='Ingest rules')
-    parser.add_argument('--url', type=str, default=SPANISH_RULES_URL, help='URL to the rules PDF document')
+    parser.add_argument('--url', type=str, default=WFDF_RULES_URL, help='URL to the rules PDF document')
     args = parser.parse_args()
     docs = ingest_rules(args.url)
     console.print(f'Ingested {len(docs)} documents')

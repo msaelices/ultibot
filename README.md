@@ -30,6 +30,14 @@ Copy the `.env-default` file to `.env` file and fill it with your API keys:
     cd src/
     cp .env-default .env
 
+
+### Ingesting the Ultimate Frisbee official rules knowledge
+
+Ingest the Ultimate Frisbee documentation from the official rules PDF:
+
+    cd src/
+    python ingest.py
+
 ### Starting the server
 
 For starting the Streamlit Server, run the following command:
