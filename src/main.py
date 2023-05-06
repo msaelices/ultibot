@@ -10,7 +10,23 @@ from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.document_loaders.pdf import PyMuPDFLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
 from langchain.vectorstores import FAISS
+
+
+def get_rules_prompt() -> PromptTemplate:
+    template = """Given the following extracted parts of a long document with the Ultimate Frisbee rules and a question, create a final answer with references ("FUENTES"). 
+If you don't know the answer, just say that you don't know. Don't try to make up an answer.
+ALWAYS return a "FUENTES" part in your answer.
+Respond in Spanish.
+
+QUESTION: {question}
+=========
+{summaries}
+=========
+FINAL ANSWER IN SPANISH:"""
+    return PromptTemplate(template=template, input_variables=['summaries', 'question'])
+
 
 def main() -> int:
     load_dotenv()
@@ -36,7 +52,7 @@ def main() -> int:
         llm = OpenAI(model_name='text-davinci-003')
         llm.set_verbose(False)
 
-        qa_chain = load_qa_with_sources_chain(llm, verbose=False)
+        qa_chain = load_qa_with_sources_chain(llm, verbose=False, prompt=get_rules_prompt())
 
         with get_openai_callback() as cb:
             response = qa_chain.run(input_documents=relevant_docs, question=question)
