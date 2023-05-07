@@ -31,6 +31,8 @@ Copy the `.env-default` file to `.env` file and fill it with your API keys:
 
     cp .env-default .env
 
+You need to have API keys both from [OpenAI](https://platform.openai.com/account/api-keys) for running the Q/A UI, and from [Pinecone](https://app.pinecone.io) for storing the knowledge base.
+
 
 ### Ingesting the Ultimate Frisbee official rules knowledge
 
